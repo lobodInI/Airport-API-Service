@@ -75,3 +75,7 @@ class Ticket(models.Model):
         return (
             f"{str(self.flight)} (row: {self.row}, seat: {self.seat})"
         )
+
+    class Meta:
+        unique_together = ("flight", "row", "seat")
+        ordering = ["row", "seat"]
