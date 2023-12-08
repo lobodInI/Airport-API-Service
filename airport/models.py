@@ -39,12 +39,12 @@ class Route(models.Model):
     sourse = models.ForeignKey(
         to=Airport,
         on_delete=models.CASCADE,
-        related_name="routes"
+        related_name="start_of_route"
     )
     destination = models.ForeignKey(
         to=Airport,
         on_delete=models.CASCADE,
-        related_name="routes"
+        related_name="end_of_route"
     )
 
     def __str__(self) -> str:
