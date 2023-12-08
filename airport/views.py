@@ -1,3 +1,6 @@
+from datetime import datetime
+
+from django.db.models import F, Count
 from rest_framework import mixins, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -122,8 +125,45 @@ class RouteViewSet(
 
 
 class FlightViewSet(viewsets.ModelViewSet):
-    queryset = Flight.objects.all()
+    queryset = (
+        Flight.objects.all()
+        .select_related("route", "airplane")
+        .prefetch_related("crew")
+        .annotate(
+            tickets_available=(
+                    F("airplane__rows") * F("airplane__seats_in_row")
+                    - Count("tickets")
+            )
+        )
+    )
     serializer_class = FlightSerializer
+
+    def get_queryset(self):
+        depart_date = self.request.query_params.get("depart_date")
+        departure = self.request.query_params.get("departure")
+        arrival = self.request.query_params.get("arrival")
+
+        queryset = self.queryset
+
+        if depart_date:
+            date = datetime.strptime(
+                depart_date, "%Y-%m-%d"
+            ).date()
+            queryset = queryset.filter(
+                departure_time__date=date
+            )
+
+        if departure:
+            queryset = queryset.filter(
+                route__source__name__icontains=departure
+            )
+
+        if arrival:
+            queryset = queryset.filter(
+                route__destination__name__icontains=arrival
+            )
+
+        return queryset.distinct()
 
     def get_serializer_class(self):
         if self.action == "list":
