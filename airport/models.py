@@ -36,7 +36,7 @@ class Airport(models.Model):
 
 
 class Route(models.Model):
-    sourse = models.ForeignKey(
+    source = models.ForeignKey(
         to=Airport,
         on_delete=models.CASCADE,
         related_name="start_of_route"
@@ -48,7 +48,7 @@ class Route(models.Model):
     )
 
     def __str__(self) -> str:
-        return f"{self.sourse} - {self.destination}"
+        return f"{self.source} - {self.destination}"
 
 
 class AirplaneType(models.Model):
@@ -109,5 +109,5 @@ class Flight(models.Model):
         ordering = ["-departure_time"]
 
     def __str__(self) -> str:
-        return (f"{self.route.sourse} - {self.route.destination}"
+        return (f"{self.route.source} - {self.route.destination}"
                 f"Departure: {str(self.departure_time)}")

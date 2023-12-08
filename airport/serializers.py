@@ -72,11 +72,11 @@ class CrewSerializer(serializers.ModelSerializer):
 class RouteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Route
-        fields = ("id", "sourse", "destination")
+        fields = ("id", "source", "destination")
 
 
 class RouteListSerializer(RouteSerializer):
-    sourse = serializers.SlugRelatedField(
+    source = serializers.SlugRelatedField(
         many=False, read_only=True, slug_field="name"
     )
     destination = serializers.SlugRelatedField(
@@ -99,7 +99,7 @@ class FlightSerializer(serializers.ModelSerializer):
 
 class FlightListSerializer(FlightSerializer):
     route_sourse = serializers.CharField(
-        source="route.sourse.name", read_only=True
+        source="route.source.name", read_only=True
     )
     route_destination = serializers.CharField(
         source="route.destination.name", read_only=True
@@ -110,7 +110,7 @@ class FlightListSerializer(FlightSerializer):
         model = Flight
         fields = (
             "id",
-            "route_sourse",
+            "route_source",
             "route_destination",
             "departure_time",
             "arrival_time",
