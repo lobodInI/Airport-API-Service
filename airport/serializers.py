@@ -98,7 +98,7 @@ class FlightSerializer(serializers.ModelSerializer):
 
 
 class FlightListSerializer(FlightSerializer):
-    route_sourse = serializers.CharField(
+    route_source = serializers.CharField(
         source="route.source.name", read_only=True
     )
     route_destination = serializers.CharField(
