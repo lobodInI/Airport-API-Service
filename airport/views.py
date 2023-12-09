@@ -16,7 +16,7 @@ from airport.models import (
     Crew,
     Location,
     Route,
-    Flight
+    Flight,
 )
 from airport.permissions import IsAdminOrIfAuthenticatedReadOnly
 
@@ -33,7 +33,7 @@ from airport.serializers import (
     RouteListSerializer,
     FlightSerializer,
     FlightListSerializer,
-    FlightDetailSerializer
+    FlightDetailSerializer,
 )
 
 
@@ -141,8 +141,8 @@ class FlightViewSet(viewsets.ModelViewSet):
         .prefetch_related("crew")
         .annotate(
             tickets_available=(
-                    F("airplane__rows") * F("airplane__seats_in_row")
-                    - Count("tickets")
+                F("airplane__rows") * F("airplane__seats_in_row")
+                - Count("tickets")
             )
         )
     )
@@ -191,25 +191,24 @@ class FlightViewSet(viewsets.ModelViewSet):
                 name="depart_date",
                 type=OpenApiTypes.DATE,
                 description=(
-                        "Filter by datetime of flights "
-                        "(ex. ?date=2023-12-23)"
-                )
+                    "Filter by datetime of flights "
+                    "(ex. ?date=2023-12-23)"),
             ),
             OpenApiParameter(
                 name="departure",
                 type=OpenApiTypes.STR,
                 description=(
-                        "Filter by name airport of flights "
-                        "(ex. ?departure=heathrow)"
-                )
+                    "Filter by name airport of flights "
+                    "(ex. ?departure=heathrow)"
+                ),
             ),
             OpenApiParameter(
                 name="arrival",
                 type=OpenApiTypes.STR,
                 description=(
-                        "Filter by name airport of flights "
-                        "(ex. ?arrival=boryspil)"
-                )
+                    "Filter by name airport of flights "
+                    "(ex. ?arrival=boryspil)"
+                ),
             ),
         ]
     )

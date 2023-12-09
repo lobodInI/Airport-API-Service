@@ -8,9 +8,7 @@ from airport.models import Flight
 class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
-        get_user_model(),
-        on_delete=models.CASCADE,
-        related_name="orders"
+        get_user_model(), on_delete=models.CASCADE, related_name="orders"
     )
 
     class Meta:
@@ -22,14 +20,10 @@ class Order(models.Model):
 
 class Ticket(models.Model):
     flight = models.ForeignKey(
-        to=Flight,
-        on_delete=models.CASCADE,
-        related_name="tickets"
+        to=Flight, on_delete=models.CASCADE, related_name="tickets"
     )
     order = models.ForeignKey(
-        to=Order,
-        on_delete=models.CASCADE,
-        related_name="tickets"
+        to=Order, on_delete=models.CASCADE, related_name="tickets"
     )
     row = models.IntegerField()
     seat = models.IntegerField()
@@ -45,9 +39,9 @@ class Ticket(models.Model):
                 raise error_to_raise(
                     {
                         ticket_attr_name: f"{ticket_attr_name} "
-                                          f"number must be in available range: "
-                                          f"(1, {airplane_attr_name}): "
-                                          f"(1, {count_attrs})"
+                        f"number must be in available range: "
+                        f"(1, {airplane_attr_name}): "
+                        f"(1, {count_attrs})"
                     }
                 )
 
@@ -72,9 +66,7 @@ class Ticket(models.Model):
         )
 
     def __str__(self) -> str:
-        return (
-            f"{str(self.flight)} (row: {self.row}, seat: {self.seat})"
-        )
+        return f"{str(self.flight)} (row: {self.row}, seat: {self.seat})"
 
     class Meta:
         unique_together = ("flight", "row", "seat")

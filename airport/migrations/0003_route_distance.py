@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('airport', '0002_rename_sourse_route_source'),
+        ("airport", "0002_rename_sourse_route_source"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='route',
-            name='distance',
+            model_name="route",
+            name="distance",
             field=models.IntegerField(default=100),
             preserve_default=False,
         ),

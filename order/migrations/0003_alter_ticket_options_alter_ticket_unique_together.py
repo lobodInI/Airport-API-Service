@@ -4,19 +4,18 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('airport', '0002_rename_sourse_route_source'),
-        ('order', '0002_initial'),
+        ("airport", "0002_rename_sourse_route_source"),
+        ("order", "0002_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='ticket',
-            options={'ordering': ['row', 'seat']},
+            name="ticket",
+            options={"ordering": ["row", "seat"]},
         ),
         migrations.AlterUniqueTogether(
-            name='ticket',
-            unique_together={('flight', 'row', 'seat')},
+            name="ticket",
+            unique_together={("flight", "row", "seat")},
         ),
     ]

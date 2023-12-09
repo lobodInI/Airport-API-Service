@@ -23,13 +23,9 @@ def airport_image_file_path(instance, filename):
 class Airport(models.Model):
     name = models.CharField(max_length=255)
     location = models.ForeignKey(
-        to=Location,
-        on_delete=models.CASCADE,
-        related_name="airports"
+        to=Location, on_delete=models.CASCADE, related_name="airports"
     )
-    image = models.ImageField(
-        null=True, upload_to=airport_image_file_path
-    )
+    image = models.ImageField(null=True, upload_to=airport_image_file_path)
 
     def __str__(self) -> str:
         return f"{self.name}({self.location.city})"
@@ -37,14 +33,10 @@ class Airport(models.Model):
 
 class Route(models.Model):
     source = models.ForeignKey(
-        to=Airport,
-        on_delete=models.CASCADE,
-        related_name="start_of_route"
+        to=Airport, on_delete=models.CASCADE, related_name="start_of_route"
     )
     destination = models.ForeignKey(
-        to=Airport,
-        on_delete=models.CASCADE,
-        related_name="end_of_route"
+        to=Airport, on_delete=models.CASCADE, related_name="end_of_route"
     )
     distance = models.IntegerField()
 
@@ -64,9 +56,7 @@ class Airplane(models.Model):
     rows = models.IntegerField()
     seats_in_row = models.IntegerField()
     airplane_type = models.ForeignKey(
-        to=AirplaneType,
-        on_delete=models.CASCADE,
-        related_name="airplanes"
+        to=AirplaneType, on_delete=models.CASCADE, related_name="airplanes"
     )
 
     @property
@@ -91,18 +81,12 @@ class Crew(models.Model):
 
 class Flight(models.Model):
     route = models.ForeignKey(
-        to=Route,
-        on_delete=models.CASCADE,
-        related_name="flights"
+        to=Route, on_delete=models.CASCADE, related_name="flights"
     )
     airplane = models.ForeignKey(
-        to=Airplane,
-        on_delete=models.CASCADE,
-        related_name="flights"
+        to=Airplane, on_delete=models.CASCADE, related_name="flights"
     )
-    crew = models.ManyToManyField(
-        to=Crew, related_name="flights"
-    )
+    crew = models.ManyToManyField(to=Crew, related_name="flights")
     departure_time = models.DateTimeField()
     arrival_time = models.DateTimeField()
 
@@ -110,5 +94,7 @@ class Flight(models.Model):
         ordering = ["-departure_time"]
 
     def __str__(self) -> str:
-        return (f"{self.route.source} - {self.route.destination}"
-                f"Departure: {str(self.departure_time)}")
+        return (
+            f"{self.route.source} - {self.route.destination}"
+            f"Departure: {str(self.departure_time)}"
+        )

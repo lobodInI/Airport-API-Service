@@ -7,7 +7,7 @@ from airport.models import (
     Crew,
     Location,
     Route,
-    Flight
+    Flight,
 )
 
 admin.site.register(AirplaneType)

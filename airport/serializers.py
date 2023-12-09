@@ -7,7 +7,7 @@ from airport.models import (
     Crew,
     Location,
     Route,
-    Flight
+    Flight,
 )
 from order.models import Ticket
 
@@ -114,7 +114,7 @@ class FlightListSerializer(FlightSerializer):
             "route_destination",
             "departure_time",
             "arrival_time",
-            "tickets_available"
+            "tickets_available",
         )
 
 
@@ -141,5 +141,5 @@ class FlightDetailSerializer(FlightSerializer):
             "crew",
             "departure_time",
             "arrival_time",
-            "taken_places"
+            "taken_places",
         )
