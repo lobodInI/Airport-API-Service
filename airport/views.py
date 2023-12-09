@@ -1,6 +1,8 @@
 from datetime import datetime
 
 from django.db.models import F, Count
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import mixins, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
@@ -182,3 +184,34 @@ class FlightViewSet(viewsets.ModelViewSet):
             return FlightDetailSerializer
 
         return FlightSerializer
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="depart_date",
+                type=OpenApiTypes.DATE,
+                description=(
+                        "Filter by datetime of flights "
+                        "(ex. ?date=2023-12-23)"
+                )
+            ),
+            OpenApiParameter(
+                name="departure",
+                type=OpenApiTypes.STR,
+                description=(
+                        "Filter by name airport of flights "
+                        "(ex. ?departure=heathrow)"
+                )
+            ),
+            OpenApiParameter(
+                name="arrival",
+                type=OpenApiTypes.STR,
+                description=(
+                        "Filter by name airport of flights "
+                        "(ex. ?arrival=boryspil)"
+                )
+            ),
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
