@@ -72,7 +72,7 @@ class CrewSerializer(serializers.ModelSerializer):
 class RouteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Route
-        fields = ("id", "source", "destination")
+        fields = ("id", "source", "destination", "distance")
 
 
 class RouteListSerializer(RouteSerializer):

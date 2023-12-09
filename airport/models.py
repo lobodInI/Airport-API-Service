@@ -46,6 +46,7 @@ class Route(models.Model):
         on_delete=models.CASCADE,
         related_name="end_of_route"
     )
+    distance = models.IntegerField()
 
     def __str__(self) -> str:
         return f"{self.source} - {self.destination}"
