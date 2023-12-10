@@ -7,6 +7,6 @@ from order.views import OrderViewSet
 router = routers.DefaultRouter()
 router.register("orders", OrderViewSet)
 
-urlpatterns = [path("", include(router.urls))]
+urlpatterns = router.urls
 
 app_name = "order"
