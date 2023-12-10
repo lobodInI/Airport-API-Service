@@ -13,7 +13,7 @@ class Location(models.Model):
         return f"{self.city}({self.country})"
 
 
-def airport_image_file_path(instance, filename):
+def airport_image_file_path(instance, filename) -> str:
     _, extension = os.path.splitext(filename)
     filename = f"{slugify(instance.name)}-{uuid.uuid4()}{extension}"
 
@@ -63,7 +63,7 @@ class Airplane(models.Model):
     def capacity(self) -> int:
         return self.rows * self.seats_in_row
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 

@@ -29,7 +29,7 @@ class Ticket(models.Model):
     seat = models.IntegerField()
 
     @staticmethod
-    def validate_ticket(row, seat, airplane, error_to_raise):
+    def validate_ticket(row, seat, airplane, error_to_raise) -> None:
         for ticket_attr_value, ticket_attr_name, airplane_attr_name in [
             (row, "row", "rows"),
             (seat, "seat", "seats_in_row"),
@@ -45,7 +45,7 @@ class Ticket(models.Model):
                     }
                 )
 
-    def clean(self):
+    def clean(self) -> None:
         Ticket.validate_ticket(
             self.row,
             self.seat,

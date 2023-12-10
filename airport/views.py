@@ -1,12 +1,14 @@
 from datetime import datetime
+from typing import Type
 
-from django.db.models import F, Count
+from django.db.models import F, Count, QuerySet
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import mixins, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
+from rest_framework.serializers import Serializer
 from rest_framework.viewsets import GenericViewSet
 
 from airport.models import (
@@ -56,7 +58,7 @@ class AirplaneViewSet(
     serializer_class = AirplaneSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "list":
             return AirplaneListSerializer
         return AirplaneSerializer
@@ -81,7 +83,7 @@ class AirportViewSet(
     serializer_class = AirportSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "list":
             return AirportListSerializer
 
@@ -96,16 +98,14 @@ class AirportViewSet(
         url_path="upload-image",
         permission_classes=[IsAdminUser],
     )
-    def upload_image(self, request, pk=None):
+    def upload_image(self, request, pk=None) -> Response:
         """Endpoint for uploading image to specific airport"""
         airport = self.get_object()
         serializer = self.get_serializer(airport, data=request.data)
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CrewViewSet(
@@ -127,7 +127,7 @@ class RouteViewSet(
     serializer_class = RouteSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "list":
             return RouteListSerializer
 
@@ -149,7 +149,7 @@ class FlightViewSet(viewsets.ModelViewSet):
     serializer_class = FlightSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         depart_date = self.request.query_params.get("depart_date")
         departure = self.request.query_params.get("departure")
         arrival = self.request.query_params.get("arrival")
@@ -176,7 +176,7 @@ class FlightViewSet(viewsets.ModelViewSet):
 
         return queryset.distinct()
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "list":
             return FlightListSerializer
 
@@ -212,5 +212,5 @@ class FlightViewSet(viewsets.ModelViewSet):
             ),
         ]
     )
-    def list(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs) -> list:
         return super().list(request, *args, **kwargs)

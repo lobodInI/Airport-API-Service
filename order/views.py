@@ -1,6 +1,10 @@
+from typing import Type
+
+from django.db.models import QuerySet
 from rest_framework import mixins
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.serializers import Serializer
 from rest_framework.viewsets import GenericViewSet
 
 from order.models import Order
@@ -24,14 +28,14 @@ class OrderViewSet(
     pagination_class = OrderPagination
     permission_classes = (IsAuthenticated,)
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         return Order.objects.filter(user=self.request.user)
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "list":
             return OrderListSerializer
 
         return OrderSerializer
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer) -> None:
         serializer.save(user=self.request.user)
